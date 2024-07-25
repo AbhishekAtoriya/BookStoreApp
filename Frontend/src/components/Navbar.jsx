@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import Login from "./Login";
+import Logout from './Logout';
+import { useAuth } from "../context/AuthProvider";
 
 function Navbar() {
+  const { authUser, setAuthUser } = useAuth(); // Corrected: Ensure `useAuth` returns an object with `authUser` and `setAuthUser`
+
   const [theme, setTheme] = useState(
-    localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
+    localStorage.getItem("theme") || "light"
   );
 
   useEffect(() => {
-    const element = document.documentElement; // Move this inside useEffect
+    const element = document.documentElement;
     if (theme === "dark") {
       element.classList.add("dark");
     } else {
@@ -45,16 +49,14 @@ function Navbar() {
         <a href="/contact">Contact</a>
       </li>
       <li>
-        <a>About</a>
+        <a href="/about">About</a> {/* Corrected: Added href for About */}
       </li>
     </>
   );
 
   return (
     <div
-      className={`max-w-screen-2xl container mx-auto md:px-20 px-4 fixed top-0 left-0 right-0 z-50 ${
-        sticky ? 'sticky-navbar shadow-md bg-base-200 duration-300 transition-all ease-in-out' : ''
-      }`}
+      className={`max-w-screen-2xl container mx-auto md:px-20 px-4 fixed top-0 left-0 right-0 z-50 ${sticky ? 'sticky-navbar shadow-md bg-base-200 duration-300 transition-all ease-in-out' : ''}`}
     >
       <div className="navbar dark:bg-slate-900 dark:text-white">
         <div className="navbar-start">
@@ -106,7 +108,7 @@ function Navbar() {
             </label>
           </div>
           <label className="swap swap-rotate">
-            <input type="checkbox" className="theme-controller" value="synthwave" />
+            <input type="checkbox" className="theme-controller" />
             <svg
               className="swap-off h-7 w-7 fill-current"
               xmlns="http://www.w3.org/2000/svg"
@@ -128,15 +130,19 @@ function Navbar() {
               />
             </svg>
           </label>
-          <div>
-            <a
-              className="bg-black text-white px-3 py-2 rounded-md hover:bg-slate-800 duration-300 cursor-pointer"
-              onClick={() => document.getElementById("my_modal_3").showModal()}
-            >
-              Login
-            </a>
-           <Login />
-          </div>
+          {authUser ? (
+            <Logout />
+          ) : (
+            <div className="">
+              <a
+                className="bg-black text-white px-3 py-2 rounded-md hover:bg-slate-800 duration-300 cursor-pointer"
+                onClick={() => document.getElementById("my_modal_3").showModal()}
+              >
+                Login
+              </a>
+              <Login />
+            </div>
+          )}
         </div>
       </div>
     </div>
