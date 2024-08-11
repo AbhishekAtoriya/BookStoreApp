@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
 import toast from 'react-hot-toast';
+
 function Login() {
   const {
     register,
@@ -21,12 +22,12 @@ function Login() {
       .then((res) => {
         console.log(res.data);
         if (res.data) {
-          toast.success('Successfully created!'); 
-          document.getElementById("my_model_3").closest();
+          toast.success('Successfully logged in!'); 
+          document.getElementById("my_modal_3").close(); // Corrected line to close the modal
           setTimeout(() => {
-            window.location.reload();
             localStorage.setItem("Users", JSON.stringify(res.data));
-          },3000);
+            window.location.reload();
+          }, 3000);
         }
         
       })
@@ -44,7 +45,7 @@ function Login() {
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Link to="/" className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</Link>
+            <button type="button" className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={() => document.getElementById("my_modal_3").close()}>✕</button>
             <h3 className="font-bold text-lg">Login</h3>
             {/* Email */}
             <div className='mt-4 space-y-3'>

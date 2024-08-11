@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Login from "./Login";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import toast from 'react-hot-toast';
+
 function Signup() {
   const {
     register,
@@ -18,7 +18,6 @@ function Signup() {
       password: data.password,
     };
 
-    // Remove await here; use .then and .catch for promise handling
     axios
       .post("http://localhost:4001/user/signup", userInfo)
       .then((res) => {
@@ -92,7 +91,6 @@ function Signup() {
               </p>
             </div>
           </form>
-          <Login />
         </div>
       </div>
     </div>
